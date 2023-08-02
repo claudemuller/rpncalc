@@ -1,4 +1,5 @@
 # Reverse Polish Notation Calculator
+[![unit tests](https://github.com/claudemuller/rpncalc/actions/workflows/c.yml/badge.svg)](https://github.com/claudemuller/rpncalc/actions/workflows/c.yml)
 
 A [Reverse Polish Notation Calculator](https://en.wikipedia.org/wiki/Reverse_Polish_notation) written in C.
 
