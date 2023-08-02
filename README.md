@@ -14,12 +14,6 @@ make build
 make run
 ```
 
-## Build
-
-```bash
-make build
-```
-
 ## Build Debug
 
 ```bash
