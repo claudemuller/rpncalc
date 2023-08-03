@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-	printf("= %d\n", parse(argv[1]));
+	printf("= %g\n", parse(argv[1]));
 
 	return 0;
 }

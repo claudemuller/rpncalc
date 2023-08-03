@@ -5,14 +5,23 @@
 #include <stddef.h>
 #include "rpn.h"
 
-int parse(char *str)
-{
+const size_t MAXVAL = 100;
+
+op_stack_t *new_stack(size_t max) {
 	op_stack_t *stack = (op_stack_t*)malloc(sizeof(op_stack_t) + (MAXVAL * sizeof(double)));
 	if (!stack) {
-		printf("error alloc'ing mem\n");
+		perror("error alloc'ing mem\n");
 		exit(1);
 	}
 
+	stack->max = max;
+
+	return stack;
+}
+
+double parse(char *str)
+{
+	op_stack_t *stack = new_stack(MAXVAL);
 	int type;
 	double op2;
 
@@ -50,20 +59,25 @@ int parse(char *str)
 			!DEBUG ? : printf("performing: %c\n", OP_DIV);
 			op2 = pop(stack);
 			if (op2 == 0.0) {
-				printf("error: zero divisor\n");
+				fprintf(stderr, "error: zero divisor\n");
+				return 0.0;
 			}
 			push(stack, pop(stack) / op2);
 			break;
 
 		default:
-			printf("unknown command %s\n", token);
-			break;
+			fprintf(stderr, "error: unknown command %s\n", token);
+			return 0.0;
 		}
 
 		token = strtok(NULL, " ");
 	};
 
-	return pop(stack);
+	double ans = pop(stack);
+
+	free(stack);
+
+	return ans;
 }
 
 int getop(char *s)
@@ -88,8 +102,8 @@ int getop(char *s)
 
 void push(op_stack_t *stack, const double v)
 {
-	if (stack->sp >= MAXVAL) {
-		printf("error: stack is full, can't push %g\n", v);
+	if (stack->sp >= stack->max) {
+		fprintf(stderr, "error: stack is full, can't push %g\n", v);
 		return;
 	}
 
@@ -100,7 +114,7 @@ void push(op_stack_t *stack, const double v)
 double pop(op_stack_t *stack)
 {
 	if (stack->sp <= 0) {
-		printf("error: stack is empty\n");
+		fprintf(stderr, "error: stack is empty\n");
 		return 0.0;
 	}
 
