@@ -15,23 +15,27 @@
 
 const bool DEBUG = false;
 
+FILE *stderr_stream;
 FILE *original_stderr;
 char stderr_buf[BUF_SIZE];
 
 void test_setup()
 {
-    // Initialise buffer and disable buffering for stderr
-    stderr_buf[0] = '\0';
-    setbuf(stderr, NULL);
+    stderr_stream = fmemopen(stderr_buf, BUF_SIZE, "w");
+    if (!stderr_stream) {
+        perror("error creating stderr stream\n");
+        exit(1);
+    }
 
     original_stderr = stderr;
-    stderr = fmemopen(stderr_buf, BUF_SIZE, "w");
+    stderr = stderr_stream;
+    setbuf(stderr, NULL);
 }
 
 void test_teardown()
 {
-    fclose(stderr);
     stderr = original_stderr;
+    fclose(stderr_stream);
 }
 
 void reset_stderr()

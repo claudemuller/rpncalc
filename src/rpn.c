@@ -14,6 +14,7 @@ op_stack_t *new_stack(size_t max) {
 		exit(1);
 	}
 
+	stack->sp = 0;
 	stack->max = max;
 
 	return stack;
