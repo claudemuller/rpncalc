@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "rpn.h"
+#include "utils.h"
 
 const bool DEBUG = true;
 

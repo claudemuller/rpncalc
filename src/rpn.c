@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include "rpn.h"
+#include "utils.h"
 
 const size_t MAXVAL = 100;
 
@@ -30,7 +31,7 @@ double parse(char *str)
 	strncpy(s, str, strlen(str));
 	char *token = strtok(s, " ");
 
-	!DEBUG ? : printf("parsing: %s\n", str);
+	DPRINT(DEBUG, "parsing: %s\n", str);
 
 	while (token != NULL) {
 		type = getop(token);
@@ -41,23 +42,23 @@ double parse(char *str)
 			break;
 
 		case OP_PLUS:
-			!DEBUG ? : printf("performing: %c\n", OP_PLUS);
+			DPRINT(DEBUG, "performing: %c\n", OP_PLUS);
 			push(stack, pop(stack) + pop(stack));
 			break;
 
 		case OP_MUL:
-			!DEBUG ? : printf("performing: %c\n", OP_MUL);
+			DPRINT(DEBUG, "performing: %c\n", OP_MUL);
 			push(stack, pop(stack) * pop(stack));
 			break;
 
 		case OP_MIN:
-			!DEBUG ? : printf("performing: %c\n", OP_MIN);
+			DPRINT(DEBUG, "performing: %c\n", OP_MIN);
 			op2 = pop(stack);
 			push(stack, pop(stack) - op2);
 			break;
 
 		case OP_DIV:
-			!DEBUG ? : printf("performing: %c\n", OP_DIV);
+			DPRINT(DEBUG, "performing: %c\n", OP_DIV);
 			op2 = pop(stack);
 			if (op2 == 0.0) {
 				fprintf(stderr, "error: zero divisor\n");
@@ -108,7 +109,7 @@ void push(op_stack_t *stack, const double v)
 		return;
 	}
 
-	!DEBUG ? : printf("pushing: %g\n", v);
+	DPRINT(DEBUG, "pushing: %g\n", v);
 	stack->values[stack->sp++] = v;
 }
 
@@ -120,7 +121,7 @@ double pop(op_stack_t *stack)
 	}
 
 	double t = stack->values[--stack->sp];
-	!DEBUG ? : printf("popping: %g\n", t);
+	DPRINT(DEBUG, "popping: %g\n", t);
 
 	return t;
 }

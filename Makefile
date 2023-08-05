@@ -1,21 +1,28 @@
-SRC=./src
-BIN=./bin
-TESTS=./tests
+CFLAGS = -std=c99
+CFLAGS += -Wall
+CFLAGS += -Wextra
+CFLAGS += -pedantic
+CFLAGS += -Werror
+CFLAGS += -Wmissing-declarations
+SRC_FILES = ./src/*.c
+BIN_DIR = ./bin
+TEST_DIR = ./tests
+TEST_SRC = $(filter-out ./src/main.c, $(wildcard ./src/*.c)) $(TEST_DIR)/*.c
 
 build:
-	gcc -o $(BIN)/main $(SRC)/*.c
+	gcc $(CFLAGS) -o $(BIN_DIR)/main $(SRC_FILES)
 
 debug:
-	gcc -g -o $(BIN)/main $(SRC)/*.c
+	gcc $(CFLAGS) -g -o $(BIN_DIR)/main $(SRC_FILES)
 
 run: build
-	@$(BIN)/main $(ARGS)
+	@$(BIN_DIR)/main $(ARGS)
 
 test:
-	gcc -o $(TESTS)/tests $(SRC)/rpn.c $(TESTS)/test_rpn.c && $(TESTS)/tests
+	gcc $(CFLAGS) -o $(TEST_DIR)/tests $(TEST_SRC) && $(TEST_DIR)/tests
 
 test-debug:
-	gcc -g -o $(TESTS)/tests $(SRC)/rpn.c $(TESTS)/test_rpn.c
+	gcc $(CFLAGS) -g -o $(TEST_DIR)/tests $(TEST_SRC) && lldb $(TEST_DIR)/tests $(ARGS)
 
 clean:
-	rm -rf $(BIN)/* $(TESTS)/tests
+	rm -rf $(BIN_DIR)/* $(TEST_DIR)/tests*
