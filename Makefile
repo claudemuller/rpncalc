@@ -12,19 +12,19 @@ TEST_DIR = ./tests
 TEST_SRC = $(filter-out ./src/main.c, $(wildcard ./src/*.c)) $(TEST_DIR)/*.c
 
 build:
-	$(CC) $(CFLAGS) -o $(BIN_DIR)/main $(SRC_FILES)
+	$(CC) $(CFLAGS) $(LIBS) $(SRC_FILES) -o $(BIN_DIR)/main $(LDFLAGS)
 
 debug:
-	$(CC) $(CCFLAGS) $(CFLAGS) -g -o $(BIN_DIR)/main $(SRC_FILES)
+	$(CC) $(CFLAGS) -g $(LIBS) $(SRC_FILES) -o $(BIN_DIR)/main $(LDFLAGS)
 
 run: build
 	@$(BIN_DIR)/main $(ARGS)
 
 test:
-	$(CC) $(CCFLAGS) $(CCFLAGS) $(CFLAGS) -o $(TEST_DIR)/tests $(TEST_SRC) && $(TEST_DIR)/tests
+	$(CC) $(CFLAGS) $(LIBS) $(TEST_SRC) -o $(TEST_DIR)/tests $(LDFLAGS) && $(TEST_DIR)/tests
 
 test-debug:
-	$(CC) $(CCFLAGS) $(CFLAGS) -g -o $(TEST_DIR)/tests $(TEST_SRC) && lldb $(TEST_DIR)/tests $(ARGS)
+	$(CC) $(CFLAGS) -g $(LIBS) $(TEST_SRC) -o $(TEST_DIR)/tests $(LDFLAGS) && lldb $(TEST_DIR)/tests $(ARGS)
 
 clean:
 	rm -rf $(BIN_DIR)/* $(TEST_DIR)/tests*
