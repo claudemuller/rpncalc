@@ -4,8 +4,6 @@
 #include "test_rpn.h"
 #include "../src/rpn.h"
 
-#define _GNU_SOURCE
-
 #define ASSERT(condition) \
 	do { \
 		if (!(condition)) { \
