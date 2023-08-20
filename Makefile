@@ -1,5 +1,4 @@
 CC = gcc
-CCFLAGS = -D_GNU_SOURCE
 CFLAGS = -std=c99
 CFLAGS += -Wall
 CFLAGS += -Wextra
@@ -21,10 +20,10 @@ run: build
 	@$(BIN_DIR)/main $(ARGS)
 
 test:
-	$(CC) $(CFLAGS) $(LIBS) $(TEST_SRC) -o $(TEST_DIR)/tests $(LDFLAGS) && $(TEST_DIR)/tests
+	$(CC) $(CFLAGS) -D_GNU_SOURCE $(LIBS) $(TEST_SRC) -o $(TEST_DIR)/tests $(LDFLAGS) && $(TEST_DIR)/tests
 
 test-debug:
-	$(CC) $(CFLAGS) -g $(LIBS) $(TEST_SRC) -o $(TEST_DIR)/tests $(LDFLAGS) && lldb $(TEST_DIR)/tests $(ARGS)
+	$(CC) $(CFLAGS) -D_GNU_SOURCE -g $(LIBS) $(TEST_SRC) -o $(TEST_DIR)/tests $(LDFLAGS) && lldb $(TEST_DIR)/tests $(ARGS)
 
 clean:
 	rm -rf $(BIN_DIR)/* $(TEST_DIR)/tests*
